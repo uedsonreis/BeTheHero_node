@@ -9,7 +9,7 @@ class NGOService {
 
     public async list(): Promise<NGO[] | Error> {
         try {
-            return await this.ngoRepository.filter()
+            return await this.ngoRepository.getAll()
         } catch (error) {
             console.error(error)
             return error

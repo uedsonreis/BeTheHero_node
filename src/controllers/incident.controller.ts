@@ -57,7 +57,7 @@ class IncidentController {
         if (result instanceof Error) {
             response.status(HTTP.UNAUTHENTICATED).send(result.message)
         } else {
-            response.status(HTTP.NO_CONTENT)
+            response.status(HTTP.OK).json(result)
         }
         next()
     }

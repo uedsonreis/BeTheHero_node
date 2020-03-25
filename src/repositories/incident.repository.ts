@@ -9,9 +9,4 @@ export class IncidentRepository extends Repository<Incident> {
     constructor() {
         super('incidents')
     }
-    
-    public async delete(id: number): Promise<void> {
-        const session = this.openSession()
-        await session.where('id', id).delete()
-    }
 }

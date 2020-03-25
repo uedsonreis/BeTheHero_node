@@ -46,13 +46,13 @@ class IncidentService {
 
     public async delete(incident: Incident): Promise<boolean | Error> {
         try {
-            const incidnetDB = await this.incidentRepository.get(incident.id)
+            const incidentDB = await this.incidentRepository.get(incident.id)
     
-            if (incidnetDB.ngo_id !== incident.ngo_id) {
+            if (!incidentDB || incidentDB.ngo_id !== incident.ngo_id) {
                 return new Error('Operação não permitida.')
             }
     
-            await this.incidentRepository.delete(incidnetDB.id)
+            await this.incidentRepository.delete(incidentDB.id)
             return true
             
         } catch (error) {

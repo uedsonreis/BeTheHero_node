@@ -20,6 +20,11 @@ export abstract class Repository<R> {
         return await session.insert(record)
     }
 
+    public async getAll(): Promise<R[]> {
+        const session = this.openSession()
+        return await session.select('*')
+    }
+
     public async paging(page: number): Promise<R[]> {
         const session = this.openSession()
         const result = await session
@@ -33,6 +38,11 @@ export abstract class Repository<R> {
     public async filter(key?: string, value?: any): Promise<R[]> {
         const session = this.openSession()
         return await session.where(key!, value).select('*')
+    }
+
+    public async delete(id: any): Promise<void> {
+        const session = this.openSession()
+        await session.where('id', id).delete()
     }
 
     public async count(): Promise<number> {
