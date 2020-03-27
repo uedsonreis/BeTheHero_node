@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express"
 
-import incidentService from '../services/incident.service'
+import { IncidentService } from '../services'
 import { Incident } from "../entities"
-import HTTP from "../app/http.codes"
+import { HTTP } from "../utils"
 
 class IncidentController {
 
     public async index(request: Request, response: Response, next: NextFunction): Promise<void> {
         const { page = 1 } = request.query
 
-        const result = await incidentService.list(page)
-        const size = await incidentService.count()
+        const result = await IncidentService.list(page)
+        const size = await IncidentService.count()
 
         if (result instanceof Error) {
             response.status(HTTP.BAD_REQUEST).send(result.message)
@@ -25,7 +25,7 @@ class IncidentController {
     public async list(request: Request, response: Response, next: NextFunction): Promise<void> {
         const ngo_id = request.headers.authorization!
 
-        const result = await incidentService.filter(ngo_id)
+        const result = await IncidentService.filter(ngo_id)
 
         if (result instanceof Error) {
             response.status(HTTP.BAD_REQUEST).send(result.message)
@@ -39,7 +39,7 @@ class IncidentController {
         const incident = request.body as Incident
         incident.ngo_id = request.headers.authorization!
 
-        const result = await incidentService.create(incident)
+        const result = await IncidentService.create(incident)
 
         if (result instanceof Error) {
             response.status(HTTP.BAD_REQUEST).send(result.message)
@@ -53,7 +53,7 @@ class IncidentController {
         const { id } = request.params
         const ngo_id = request.headers.authorization
 
-        const result = await incidentService.delete({ id: Number(id), ngo_id } as Incident)
+        const result = await IncidentService.delete({ id: Number(id), ngo_id } as Incident)
 
         if (result instanceof Error) {
             response.status(HTTP.UNAUTHENTICATED).send(result.message)

@@ -1,25 +1,14 @@
-import express from 'express';
+import express from 'express'
+import cors from 'cors'
+import { errors } from 'celebrate'
 
-import cors from 'cors';
+import routes from './router'
 
-import env from './env';
-import routes from './router';
+const service = express()
 
-class ServiceApp {
+service.use(cors())
+service.use(express.json())
+service.use('/', routes)
+service.use(errors())
 
-    public service: express.Express;
-
-    constructor() {
-        this.service = express();
-        
-        this.service.use(express.json())
-        this.service.use(cors())
-        this.service.use('/', routes)
-    }
-
-    public startService(): void {
-        this.service.listen(env.portServer, () => console.log("Serviço rodando na porta %s!", env.portServer))
-    }
-}
-
-export default new ServiceApp();
+export default service

@@ -1,4 +1,4 @@
-import { IncidentRepository } from '../repositories/incident.repository'
+import { IncidentRepository } from '../repositories'
 import { Incident } from '../entities'
 
 class IncidentService {

@@ -1,7 +1,7 @@
-import crypto from 'crypto'
+import { generateUniqueId } from '../utils'
 
 import { NGO } from '../entities'
-import { NGORepository } from '../repositories/ngo.repository'
+import { NGORepository } from '../repositories'
 
 class NGOService {
 
@@ -18,7 +18,7 @@ class NGOService {
 
     public async create(record: NGO): Promise<string | Error> {
         try {
-            record.id = crypto.randomBytes(4).toString('HEX')
+            record.id = generateUniqueId()
             await this.ngoRepository.save(record)
             return record.id
             

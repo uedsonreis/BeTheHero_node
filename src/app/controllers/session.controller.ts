@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express"
 
-import sessionService from '../services/session.service'
-import HTTP from "../app/http.codes"
+import { SessionService } from '../services'
+import { HTTP } from "../utils"
 
 class SessionController {
 
     public async create(request: Request, response: Response, next: NextFunction): Promise<void> {
         const { id } = request.body
 
-        const result = await sessionService.login(id)
+        const result = await SessionService.login(id)
 
         if (result instanceof Error) {
             response.status(HTTP.BAD_REQUEST).send(result.message)

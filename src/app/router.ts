@@ -1,29 +1,28 @@
-import createRouter, { Request, Response, NextFunction } from 'express'
-import * as core from "express-serve-static-core"
+import createRouter, { RequestHandler } from 'express'
+import { Router } from "express-serve-static-core"
 
-import NGOController from '../controllers/ngo.controller'
-import IncidentController from '../controllers/incident.controller'
+import { authValidator, pageValidator, deleteIdValidator, incidentCreateValidator, ngoCreateValidator, loginValidator } from './validators'
 
-import SessionController from '../controllers/session.controller';
+import { NGOController, IncidentController, SessionController } from './controllers'
 
 class RouterBuilder {
 
-    private readonly routes = createRouter();
+    private readonly routes = createRouter()
 
-    public getRoutes(): core.Router {
+    public getRoutes(): Router {
 
-        this.routes.post('/sessions', SessionController.create)
+        this.routes.post('/sessions', loginValidator, SessionController.create)
 
-        this.routes.get('/profile', IncidentController.list)
+        this.routes.get('/profile', authValidator, IncidentController.list)
         
-        this.routes.get('/incidents', IncidentController.index)
-        this.routes.post('/incidents', IncidentController.create)
-        this.routes.delete('/incidents/:id', IncidentController.delete)
+        this.routes.get('/incidents', pageValidator, IncidentController.index)
+        this.routes.post('/incidents', authValidator, incidentCreateValidator, IncidentController.create)
+        this.routes.delete('/incidents/:id', authValidator, deleteIdValidator, IncidentController.delete)
 
         this.routes.get('/ngos', NGOController.index)
-        this.routes.post('/ngos', NGOController.create)
+        this.routes.post('/ngos', ngoCreateValidator, NGOController.create)
         
-        return this.routes;
+        return this.routes
     }
 }
 
