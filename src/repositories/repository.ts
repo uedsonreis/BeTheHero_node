@@ -25,16 +25,6 @@ export abstract class Repository<R> {
         return await session.select('*')
     }
 
-    public async paging(page: number): Promise<R[]> {
-        const session = this.openSession()
-        const result = await session
-            .join('ngos', 'ngos.id', '=', 'incidents.ngo_id')
-            .limit(5).offset((page -1) * 5).select([
-                'incidents.*', 'ngos.name', 'ngos.whatsapp', 'ngos.email', 'ngos.city', 'ngos.uf'
-            ])
-        return result as R[]
-    }
-
     public async filter(key?: string, value?: any): Promise<R[]> {
         const session = this.openSession()
         return await session.where(key!, value).select('*')

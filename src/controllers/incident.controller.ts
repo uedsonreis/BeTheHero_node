@@ -15,8 +15,9 @@ class IncidentController {
         if (result instanceof Error) {
             response.status(HTTP.BAD_REQUEST).send(result.message)
         } else {
+            response.header('Access-Control-Expose-Headers', 'X-Total-Count')
             response.header('X-Total-Count', size.toString())
-            response.status(HTTP.CREATED).json(result)
+            response.status(HTTP.OK).json(result)
         }
         next()
     }
